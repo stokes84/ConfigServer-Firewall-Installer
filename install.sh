@@ -113,8 +113,6 @@ case $yn in
 	echo "Installing and configuring SSL for CSF GUI access..."
 	if [ -f /etc/redhat-release ]; then
 		yum -y install mod_ssl
-	else
-		apt-get -y install mod_ssl
 	fi
 	cd /etc/csf/ui
 	openssl genrsa -out server.key 2048
