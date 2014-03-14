@@ -30,7 +30,7 @@ sed -i -e 's|TESTING = "1"|TESTING = "0"|g' /etc/csf/csf.conf
 # Turn that GUI on
 sed -i -e 's|UI = "0"|UI = "1"|g' /etc/csf/csf.conf
 
-# Install SSL if you say we need to (we need it for GUI access)
+# Do we want to harden access to the CSF GUI based on IP?
 printf "\n${alert}Attention:${normal} Highly recommended that you restrict IP access to the GUI";
 printf "\n${info}Note:${normal} This restricts access based on client IP not server IP";
 printf "\n${info}Note:${normal} If you're behind a dynamic IP then you may want to decline\n";
