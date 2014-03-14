@@ -125,7 +125,7 @@ case $yn in
 	sed -i -e 's|SSLCertificateKeyFile /etc/pki/tls/private/localhost.key|SSLCertificateKeyFile /etc/csf/ui/server.key|g' /etc/httpd/conf.d/ssl.conf
 	break;;
 [Nn]* ) 
-	echo "\n${alert}Attention:${normal} Make sure you copy your key and cert files to /etc/csf/ui\n";
+	printf "\n${alert}Attention:${normal} Make sure you copy your key and cert files to /etc/csf/ui\n";
 	read -p "Press ${bold}[Enter]${normal} to complete installation..."
 	break;;
 esac
