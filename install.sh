@@ -2,8 +2,8 @@
 
 # Set some styles
 bold=`tput bold`
-alert=`tput bold setaf 1`
-info=`tput bold setaf 3`
+alert=`tput setaf 1`
+info=`tput setaf 3`
 normal=`tput sgr0`
 
 # Make a temp dir to toss install files in	
@@ -31,17 +31,17 @@ sed -i -e 's|TESTING = "1"|TESTING = "0"|g' /etc/csf/csf.conf
 sed -i -e 's|UI = "0"|UI = "1"|g' /etc/csf/csf.conf
 
 # Do we want to harden access to the CSF GUI based on IP?
-printf "\n${alert}Attention:${normal} Highly recommended that you restrict IP access to the GUI";
-printf "\n${info}Note:${normal} This restricts access based on client IP not server IP";
-printf "\n${info}Note:${normal} If you're behind a dynamic IP then you may want to decline\n";
+printf "\n${alert}${bold}Attention:${normal} Highly recommended that you restrict IP access to the GUI";
+printf "\n${info}${bold}Note:${normal} This restricts access based on client IP not server IP";
+printf "\n${info}${bold}Note:${normal} If you're behind a dynamic IP then you may want to decline\n";
 read -e -p "Do you wish to enable IP access restrictions? (y/n)" yn
 case $yn in
 [Yy]* )
 	# Just in case you want to switch the option from the installer
 	sed -i -e 's|UI_ALLOW = "0"|UI_ALLOW = "1"|g' /etc/csf/csf.conf
 	# Giz me your IP address!... the one you're on now because it's the only one that will have access to the CSF GUI
-	printf "\n${alert}Attention:${normal} This is the only IP allowed access to the CSF GUI"
-	printf "\n${info}Note:${normal} You can add/remove IP's @ /etc/csf/ui/ui.allow\n"
+	printf "\n${alert}${bold}Attention:${normal} This is the only IP allowed access to the CSF GUI"
+	printf "\n${info}${bold}Note:${normal} You can add/remove IP's @ /etc/csf/ui/ui.allow\n"
 	read -e -p "CSF GUI Allowed Access IP: " -i "${SSH_CLIENT%% *}" csfIP
 	echo ${csfIP} >> /etc/csf/ui/ui.allow
 	break;;
@@ -76,26 +76,26 @@ fi
 
 # Giz me your GUI username!
 # Also this cannot be "username" or CSF will complain
-printf "\n${info}Note:${normal} You can edit this username @ /etc/csf/csf.conf\n"
+printf "\n${info}${bold}Note:${normal} You can edit this username @ /etc/csf/csf.conf\n"
 read -e -p "CSF GUI Login Username: " csfUser
 sed -i -e "s|UI_USER = \"username\"|UI_USER = \"${csfUser}\"|g" /etc/csf/csf.conf
 
 # Giz me your GUI password!
 # You'll want this one strong although CSF has built in brute force detection (4 attempts)
 # Also this cannot be "password" or CSF will complain
-printf "\n${info}Note:${normal} You can edit this password @ /etc/csf/csf.conf\n"
+printf "\n${info}${bold}Note:${normal} You can edit this password @ /etc/csf/csf.conf\n"
 read -e -p "CSF GUI Login Password: " csfPass
 sed -i -e "s|UI_PASS = \"password\"|UI_PASS = \"${csfPass}\"|g" /etc/csf/csf.conf
 
 # Let's setup a port to push the GUI through
-printf "\n${info}Note:${normal} Leave this blank to disable firewall activity alerts"
-printf "\n${info}Note:${normal} You can edit this email @ /etc/csf/csf.conf\n"
+printf "\n${info}${bold}Note:${normal} Leave this blank to disable firewall activity alerts"
+printf "\n${info}${bold}Note:${normal} You can edit this email @ /etc/csf/csf.conf\n"
 read -e -p "CSF Alert Email: " csfEmail
 sed -i -e "s|LF_ALERT_TO = \"\"|LF_ALERT_TO = \"${csfEmail}\"|g" /etc/csf/csf.conf
 
 # Wanna get some emails from CSF?
-printf "\n${info}Note:${normal} Should be >1023 and an unused port"
-printf "\n${info}Note:${normal} You can edit this port @ /etc/csf/csf.conf\n"
+printf "\n${info}${bold}Note:${normal} Should be >1023 and an unused port"
+printf "\n${info}${bold}Note:${normal} You can edit this port @ /etc/csf/csf.conf\n"
 read -e -p "CSF GUI Port: " csfPort
 sed -i -e "s|UI_PORT = \"6666\"|UI_PORT = \"${csfPort}\"|g" /etc/csf/csf.conf
 
@@ -106,7 +106,7 @@ sh /etc/csf/remove_apf_bfd.sh
 rm -rf /tmp/csf_install
 
 # Install SSL if you say we need to (we need it for GUI access)
-printf "\n${alert}Attention:${normal} SSL is ${bold}required${normal} for connecting to the CSF GUI\n";
+printf "\n${alert}${bold}Attention:${normal} SSL is ${bold}required${normal} for connecting to the CSF GUI\n";
 read -e -p "Do you need SSL installed and configured? (y/n)" yn
 case $yn in
 [Yy]* ) 
@@ -125,7 +125,7 @@ case $yn in
 	sed -i -e 's|SSLCertificateKeyFile /etc/pki/tls/private/localhost.key|SSLCertificateKeyFile /etc/csf/ui/server.key|g' /etc/httpd/conf.d/ssl.conf
 	break;;
 [Nn]* ) 
-	printf "\n${alert}Attention:${normal} Make sure you copy your key and cert files to /etc/csf/ui\n";
+	printf "\n${alert}${bold}Attention:${normal} Make sure you copy your key and cert files to /etc/csf/ui\n";
 	read -p "Press ${bold}[Enter]${normal} to complete installation..."
 	break;;
 esac
