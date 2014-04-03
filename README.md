@@ -12,3 +12,5 @@ Ubuntu 12.04 LTS
 #### Installation ####
 
 ```bash <(curl -Ss https://raw.github.com/stokes84/ConfigServer-Firewall-Installer/master/install.sh)```
+
+Note: Currently will setup a list of default proceess to ignore during install that are based on ZPanel 10.1.1
