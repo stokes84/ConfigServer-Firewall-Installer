@@ -44,10 +44,10 @@ case $yn in
 	printf "\n${info}${bold}Note:${normal} You can add/remove IP's @ /etc/csf/ui/ui.allow\n"
 	read -e -p "CSF GUI Allowed Access IP: " -i "${SSH_CLIENT%% *}" csfIP
 	echo ${csfIP} >> /etc/csf/ui/ui.allow
-	break;;
+	;;
 [Nn]* ) 
 	sed -i -e 's|UI_ALLOW = "1"|UI_ALLOW = "0"|g' /etc/csf/csf.conf
-	break;;
+	b;;
 esac
 
 if [ -f /etc/redhat-release ]; then
@@ -121,11 +121,11 @@ case $yn in
 	chmod 400 server.*
 	sed -i -e 's|SSLCertificateFile /etc/pki/tls/certs/localhost.crt|SSLCertificateFile /etc/csf/ui/server.crt|g' /etc/httpd/conf.d/ssl.conf
 	sed -i -e 's|SSLCertificateKeyFile /etc/pki/tls/private/localhost.key|SSLCertificateKeyFile /etc/csf/ui/server.key|g' /etc/httpd/conf.d/ssl.conf
-	break;;
+	;;
 [Nn]* ) 
 	printf "\n${alert}${bold}Attention:${normal} Make sure you copy your key and cert files to /etc/csf/ui\n";
 	read -p "Press ${bold}[Enter]${normal} to complete installation..."
-	break;;
+	;;
 esac
 
 # Restart firewall and Apache
