@@ -47,7 +47,7 @@ case $yn in
 	;;
 [Nn]* ) 
 	sed -i -e 's|UI_ALLOW = "1"|UI_ALLOW = "0"|g' /etc/csf/csf.conf
-	b;;
+	;;
 esac
 
 if [ -f /etc/redhat-release ]; then
