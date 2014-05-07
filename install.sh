@@ -87,13 +87,13 @@ printf "\n${info}${bold}Note:${normal} You can edit this password @ /etc/csf/csf
 read -e -p "CSF GUI Login Password: " csfPass
 sed -i -e '/UI_PASS/s/"\([^"]*\)"/"'${csfPass}'"/' /etc/csf/csf.conf
 
-# Let's setup a port to push the GUI through
+# Wanna get some emails from CSF?
 printf "\n${info}${bold}Note:${normal} Leave this blank to disable firewall activity alerts"
 printf "\n${info}${bold}Note:${normal} You can edit this email @ /etc/csf/csf.conf\n"
 read -e -p "CSF Alert Email: " csfEmail
 sed -i -e '/LF_ALERT_TO/s/"\([^"]*\)"/"'${csfEmail}'"/' /etc/csf/csf.conf
 
-# Wanna get some emails from CSF?
+# Let's setup a port to push the GUI through
 printf "\n${info}${bold}Note:${normal} Should be >1023 and an unused port"
 printf "\n${info}${bold}Note:${normal} You can edit this port @ /etc/csf/csf.conf\n"
 read -e -p "CSF GUI Port: " csfPort
@@ -140,7 +140,6 @@ case $yn in
 		ServerAlias zpanel.${domain}
 		ServerAdmin zadmin@localhost
 		DocumentRoot "/etc/zpanel/panel/"
-		
 		SSLEngine on
 		SSLProtocol SSLv3
 		SSLCertificateFile /etc/apache2/ssl/server.crt
