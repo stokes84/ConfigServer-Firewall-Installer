@@ -78,26 +78,26 @@ fi
 # Also this cannot be "username" or CSF will complain
 printf "\n${info}${bold}Note:${normal} You can edit this username @ /etc/csf/csf.conf\n"
 read -e -p "CSF GUI Login Username: " csfUser
-sed -i -e "s|UI_USER = \"username\"|UI_USER = \"${csfUser}\"|g" /etc/csf/csf.conf
+sed -i -e '/UI_USER/s/"\([^"]*\)"/"'${csfUser}'"/' /etc/csf/csf.conf
 
 # Giz me your GUI password!
 # You'll want this one strong although CSF has built in brute force detection (4 attempts)
 # Also this cannot be "password" or CSF will complain
 printf "\n${info}${bold}Note:${normal} You can edit this password @ /etc/csf/csf.conf\n"
 read -e -p "CSF GUI Login Password: " csfPass
-sed -i -e "s|UI_PASS = \"password\"|UI_PASS = \"${csfPass}\"|g" /etc/csf/csf.conf
+sed -i -e '/UI_PASS/s/"\([^"]*\)"/"'${csfPass}'"/' /etc/csf/csf.conf
 
 # Let's setup a port to push the GUI through
 printf "\n${info}${bold}Note:${normal} Leave this blank to disable firewall activity alerts"
 printf "\n${info}${bold}Note:${normal} You can edit this email @ /etc/csf/csf.conf\n"
 read -e -p "CSF Alert Email: " csfEmail
-sed -i -e "s|LF_ALERT_TO = \"\"|LF_ALERT_TO = \"${csfEmail}\"|g" /etc/csf/csf.conf
+sed -i -e '/LF_ALERT_TO/s/"\([^"]*\)"/"'${csfEmail}'"/' /etc/csf/csf.conf
 
 # Wanna get some emails from CSF?
 printf "\n${info}${bold}Note:${normal} Should be >1023 and an unused port"
 printf "\n${info}${bold}Note:${normal} You can edit this port @ /etc/csf/csf.conf\n"
 read -e -p "CSF GUI Port: " csfPort
-sed -i -e "s|UI_PORT = \"6666\"|UI_PORT = \"${csfPort}\"|g" /etc/csf/csf.conf
+sed -i -e '/UI_PORT/s/"\([^"]*\)"/"'${csfPort}'"/' /etc/csf/csf.conf
 
 # Just in case you were using APF+BFD we'll try to remove it if it exists
 sh /etc/csf/remove_apf_bfd.sh
