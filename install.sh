@@ -118,8 +118,10 @@ case $yn in
 		openssl req -key server.key -new -out server.csr
 		openssl x509 -in server.csr -out server.crt -req -signkey server.key -days 3650
 		chmod 400 server.*
-		sed -i -e 's|SSLCertificateFile /etc/pki/tls/certs/localhost.crt|SSLCertificateFile /etc/csf/ui/server.crt|g' /etc/httpd/conf.d/ssl.conf
-		sed -i -e 's|SSLCertificateKeyFile /etc/pki/tls/private/localhost.key|SSLCertificateKeyFile /etc/csf/ui/server.key|g' /etc/httpd/conf.d/ssl.conf
+		cp server.key /etc/pki/tls/certs/server.key
+		cp server.crt /etc/pki/tls/certs/server.crt
+		sed -i -e 's|SSLCertificateFile /etc/pki/tls/certs/localhost.crt|SSLCertificateFile /etc/pki/tls/certs/server.crt|g' /etc/httpd/conf.d/ssl.conf
+		sed -i -e 's|SSLCertificateKeyFile /etc/pki/tls/private/localhost.key|SSLCertificateKeyFile /etc/pki/tls/certs/server.key|g' /etc/httpd/conf.d/ssl.conf
 	else
 		cd /etc/csf/ui
 		openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -out server.crt -keyout server.key
