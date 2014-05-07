@@ -113,14 +113,39 @@ case $yn in
 	echo "Installing and configuring SSL for CSF GUI access..."
 	if [ -f /etc/redhat-release ]; then
 		yum -y install mod_ssl
+		cd /etc/csf/ui
+		openssl genrsa -out server.key 2048
+		openssl req -key server.key -new -out server.csr
+		openssl x509 -in server.csr -out server.crt -req -signkey server.key -days 3650
+		chmod 400 server.*
+		sed -i -e 's|SSLCertificateFile /etc/pki/tls/certs/localhost.crt|SSLCertificateFile /etc/csf/ui/server.crt|g' /etc/httpd/conf.d/ssl.conf
+		sed -i -e 's|SSLCertificateKeyFile /etc/pki/tls/private/localhost.key|SSLCertificateKeyFile /etc/csf/ui/server.key|g' /etc/httpd/conf.d/ssl.conf
+	else
+		cd /etc/csf/ui
+		openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -out server.crt -keyout server.key
+		chmod 400 server.*
+		mkdir /etc/apache2/ssl/
+		a2enmod ssl
+		cp server.key /etc/apache2/ssl/server.key
+		cp server.crt /etc/apache2/ssl/server.crt
+		ln -s /etc/apache2/mods-available/ssl.load /etc/apache2/mods-enabled/ssl.load
+		ln -s /etc/apache2/mods-available/ssl.conf /etc/apache2/mods-enabled/ssl.conf
+		printf "\n${info}${bold}Note:${normal} You can edit this file @ /etc/zpanel/config/apache/httpd.conf\n"
+		read -e -p "Your FQDN: " -i "your-domain.com" domain
+		echo "
+		<virtualhost *:443>
+		ServerName ${domain}
+		ServerAlias zpanel.${domain}
+		ServerAdmin zadmin@localhost
+		DocumentRoot "/etc/zpanel/panel/"
+		
+		SSLEngine on
+		SSLProtocol SSLv3
+		SSLCertificateFile /etc/apache2/ssl/server.crt
+		SSLCertificateKeyFile /etc/apache2/ssl/server.key
+		</virtualhost>" >> /etc/zpanel/configs/apache/httpd.conf
+		service apache2 restart
 	fi
-	cd /etc/csf/ui
-	openssl genrsa -out server.key 2048
-	openssl req -key server.key -new -out server.csr
-	openssl x509 -in server.csr -out server.crt -req -signkey server.key -days 3650
-	chmod 400 server.*
-	sed -i -e 's|SSLCertificateFile /etc/pki/tls/certs/localhost.crt|SSLCertificateFile /etc/csf/ui/server.crt|g' /etc/httpd/conf.d/ssl.conf
-	sed -i -e 's|SSLCertificateKeyFile /etc/pki/tls/private/localhost.key|SSLCertificateKeyFile /etc/csf/ui/server.key|g' /etc/httpd/conf.d/ssl.conf
 	;;
 [Nn]* ) 
 	printf "\n${alert}${bold}Attention:${normal} Make sure you copy your key and cert files to /etc/csf/ui\n";
