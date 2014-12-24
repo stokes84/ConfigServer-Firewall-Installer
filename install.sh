@@ -74,6 +74,7 @@ printf "\n${info}${bold}Note:${normal} Should be >1023 and an unused port"
 printf "\n${info}${bold}Note:${normal} You can edit this port @ /etc/csf/csf.conf\n"
 read -e -p "CSF GUI Port: " csfPort
 sed -i -e '/UI_PORT/s/"\([^"]*\)"/"'${csfPort}'"/' /etc/csf/csf.conf
+sed -i -e 's|TCP_IN = "20,21,22,25,53,80,110,143,443,465,587,993,995"|TCP_IN = "20,21,22,25,53,80,110,143,443,465,587,993,995,'${csfPort}'"|g' /etc/csf/csf.conf
 
 # Just in case you were using APF+BFD we'll try to remove it if it exists
 sh /etc/csf/remove_apf_bfd.sh
