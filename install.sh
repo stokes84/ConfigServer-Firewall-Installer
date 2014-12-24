@@ -50,30 +50,6 @@ case $yn in
 	;;
 esac
 
-if [ -f /etc/redhat-release ]; then
-	# Telling CSF to ignore commonly flagged ZPanel processes (CentOS)
-	sed -i '$a\exe:/usr/libexec/postfix/pickup' /etc/csf/csf.pignore
-	sed -i '$a\exe:/usr/libexec/postfix/smtpd' /etc/csf/csf.pignore
-	sed -i '$a\exe:/usr/libexec/postfix/qmgr' /etc/csf/csf.pignore
-	sed -i '$a\exe:/usr/libexec/mysqld' /etc/csf/csf.pignore
-	sed -i '$a\exe:/usr/sbin/httpd' /etc/csf/csf.pignore
-	sed -i '$a\exe:/usr/libexec/dovecot/anvil' /etc/csf/csf.pignore
-	sed -i '$a\exe:/usr/libexec/dovecot/auth' /etc/csf/csf.pignore
-	sed -i '$a\exe:/usr/libexec/dovecot/pop3-login' /etc/csf/csf.pignore
-	sed -i '$a\exe:/usr/libexec/dovecot/imap-login' /etc/csf/csf.pignore
-else
-	# Telling CSF to ignore commonly flagged ZPanel processes (Ubuntu)
-	sed -i '$a\exe:/usr/lib/postfix/pickup' /etc/csf/csf.pignore
-	sed -i '$a\exe:/usr/lib/postfix/smtpd' /etc/csf/csf.pignore
-	sed -i '$a\exe:/usr/lib/postfix/qmgr' /etc/csf/csf.pignore
-	sed -i '$a\exe:/usr/sbin/mysqld' /etc/csf/csf.pignore
-	sed -i '$a\exe:/usr/lib/apache2/mpm-prefork/apache2' /etc/csf/csf.pignore
-	sed -i '$a\exe:/usr/lib/dovecot/anvil' /etc/csf/csf.pignore
-	sed -i '$a\exe:/usr/lib/dovecot/auth' /etc/csf/csf.pignore
-	sed -i '$a\exe:/usr/lib/dovecot/pop3-login' /etc/csf/csf.pignore
-	sed -i '$a\exe:/usr/lib/dovecot/imap-login' /etc/csf/csf.pignore
-fi
-
 # Giz me your GUI username!
 # Also this cannot be "username" or CSF will complain
 printf "\n${info}${bold}Note:${normal} You can edit this username @ /etc/csf/csf.conf\n"
