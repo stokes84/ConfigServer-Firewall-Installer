@@ -6,6 +6,7 @@ Installs ConfigServer Firewall (CSF) with additional GUI. Also installs shared S
 
 #### Compatability ####
 CentOS 6.5
+<br>
 CentOS 7
 <br>
 Ubuntu 12.04 LTS
