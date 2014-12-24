@@ -5,7 +5,8 @@ ConfigServer Firewall Installer
 Installs ConfigServer Firewall (CSF) with additional GUI. Also installs shared SSL cert if needed. Prompts during install for IP restriction, GUI username, password, port, and SSL installation.
 
 #### Compatability ####
-CentOS 6.5 Final
+CentOS 6.5
+CentOS 7
 <br>
 Ubuntu 12.04 LTS
 
