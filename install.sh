@@ -125,7 +125,6 @@ case $yn in
 		SSLCertificateFile /etc/apache2/ssl/server.crt
 		SSLCertificateKeyFile /etc/apache2/ssl/server.key
 		</virtualhost>" >> /etc/apache2/sites-available/${domain}.conf
-		service apache2 restart
 	fi
 	;;
 [Nn]* ) 
