@@ -13,4 +13,4 @@ Ubuntu 12.04 LTS
 
 #### Installation ####
 
-```wget https://raw.github.com/stokes84/ConfigServer-Firewall-Installer/master/install.sh -v -O install.sh; bash install.sh; rm -rf install.sh```
+```wget --no-check-certificate https://raw.github.com/stokes84/ConfigServer-Firewall-Installer/master/install.sh -v -O install.sh; bash install.sh; rm -rf install.sh```
