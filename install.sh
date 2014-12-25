@@ -132,7 +132,7 @@ case $yn in
 esac
 
 # Restart firewall and Apache
-csf -r && service lfd restart && service httpd restart
+service httpd stop && service httpd start && csf -r && service lfd restart
 
 # Let's run a quick test make sure we don't have any fatal errors
 perl /usr/local/csf/bin/csftest.pl
