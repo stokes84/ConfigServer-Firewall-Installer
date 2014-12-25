@@ -109,19 +109,22 @@ case $yn in
 		cp server.crt /etc/apache2/ssl/server.crt
 		ln -s /etc/apache2/mods-available/ssl.load /etc/apache2/mods-enabled/ssl.load
 		ln -s /etc/apache2/mods-available/ssl.conf /etc/apache2/mods-enabled/ssl.conf
-		printf "\n${info}${bold}Note:${normal} You can edit this file @ /etc/zpanel/config/apache/httpd.conf\n"
+		printf "\n${info}${bold}Note:${normal} You can edit this file @ /etc/apache2/sites-available/domain.com.conf\n"
 		read -e -p "Your FQDN: " -i "your-domain.com" domain
+		read -e -p "Your Email: " -i "you@your-domain.com" email
 		echo "
 		<virtualhost *:443>
 		ServerName ${domain}
-		ServerAlias zpanel.${domain}
-		ServerAdmin zadmin@localhost
-		DocumentRoot "/etc/zpanel/panel/"
+		ServerAlias *.${domain}
+		ServerAdmin ${email}
+		DocumentRoot "/var/www/html"
+		ErrorLog ${APACHE_LOG_DIR}/error.log
+		CustomLog ${APACHE_LOG_DIR}/access.log combined
 		SSLEngine on
 		SSLProtocol SSLv3
 		SSLCertificateFile /etc/apache2/ssl/server.crt
 		SSLCertificateKeyFile /etc/apache2/ssl/server.key
-		</virtualhost>" >> /etc/zpanel/configs/apache/httpd.conf
+		</virtualhost>" >> /etc/apache2/sites-available/${domain}.conf
 		service apache2 restart
 	fi
 	;;
@@ -132,7 +135,11 @@ case $yn in
 esac
 
 # Restart firewall and Apache
-service httpd stop && service httpd start && csf -r && service lfd restart
+if [ -f /etc/redhat-release ]; then
+	service httpd stop && service httpd start && csf -r && service lfd restart
+else
+	service apache2 stop && service apache2 start && csf -r && service lfd restart
+fi
 
 # Let's run a quick test make sure we don't have any fatal errors
 perl /usr/local/csf/bin/csftest.pl
