@@ -21,4 +21,4 @@ Ubuntu 12/14
 <br><br>
 #### Installation ####
 
-```wget --no-check-certificate https://raw.github.com/stokes84/ConfigServer-Firewall-Installer/master/install.sh -v -O install.sh; bash install.sh; rm -rf install.sh```
+```wget --no-check-certificate https://raw.github.com/stokes84/ConfigServer-Firewall-Installer/master/install.sh; bash install.sh; rm -rf install.sh```
