@@ -6,6 +6,12 @@ alert=`tput setaf 1`
 info=`tput setaf 3`
 normal=`tput sgr0`
 
+# Ensure this script is run as root
+if [ "$(id -u)" != "0" ]; then
+    echo "#\tThis script must be run as root." 1>&2
+    exit 1
+fi
+
 # Make a temp dir to toss install files in	
 mkdir -p /tmp/csf_install
 
