@@ -2,7 +2,7 @@ ConfigServer Firewall Installer
 ===============================
 
 #### Description ####
-Installs ConfigServer Firewall (CSF) and additional UI with credentials and port specified during install. Also installs shared SSL cert if needed (required for CSF UI) automatically and configures vhost accordingly. Tested and verified working on compatible distro's listed below.
+Installs ConfigServer Firewall (CSF) and additional UI with credentials and port specified during install. Also installs shared SSL cert if needed (required for CSF UI) automatically and configures vhost accordingly. Tested and verified working on compatible distro's listed below (possibly more?).
 <br><br>
 ###CentOS###
 Will yum update & install these dependencies: ```sed openssl perl-Time-HiRes perl-libwww-perl perl-GDGraph perl-IO-Socket-SSL.noarch perl-Net-SSLeay perl-Net-LibIDN perl-IO-Socket-INET6 perl-Socket6 net-tools rsyslog mod_ssl```
