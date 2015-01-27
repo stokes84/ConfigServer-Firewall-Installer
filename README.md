@@ -9,13 +9,6 @@ Will yum update & install these dependencies: ```sed openssl perl-Time-HiRes per
 <br><br>
 Installs cert and key files @ /etc/pki/tls/certs (if chosing "y" to install ssl during install), mod_ssl, and edits /etc/httpd/conf.d/ssl.conf with locations.
 <br><br>
-<b>Note:</b> In CentOS 7 you must first stop and disable firewalld before installing CSF. 
-```
-systemctl stop firewalld
-```
-```
-systemctl disable firewalld
-```
 ###Ubuntu###
 Will apt-get update & install these dependencies: ```apache2 sed openssl libio-socket-ssl-perl libcrypt-ssleay-perl libnet-libidn-perl libio-socket-inet6-perl libsocket6-perl```
 <br><br>
@@ -26,15 +19,21 @@ CentOS 5/6/7
 <br>
 Ubuntu 12/14
 <br><br>
-#### Installation ####
-<b>Note:</b> If you find the GUI not loading it's likely because you are blocked from it. Make sure you whitelist yourself.
+#### Notes ####
+If you find the GUI not loading it's likely because you are blocked from it. Make sure you whitelist yourself.
 ```
 sed -i -e "s|IGNORE_ALLOW = "0"|IGNORE_ALLOW = "1"|g" /etc/csf/csf.conf
 ```
 ```
 csf -a 1.1.1.1 /etc/init.d/csf restart
 ```
-<br><br>
+In CentOS 7 you must first stop and disable firewalld before (or after is fine too just restart) installing CSF. 
+```
+systemctl stop firewalld
+```
+```
+systemctl disable firewalld
+```
 #### Installation ####
 
 ```
