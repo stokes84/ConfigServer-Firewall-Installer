@@ -16,7 +16,6 @@ systemctl stop firewalld
 ```
 systemctl disable firewalld
 ```
-<br><br>
 ###Ubuntu###
 Will apt-get update & install these dependencies: ```apache2 sed openssl libio-socket-ssl-perl libcrypt-ssleay-perl libnet-libidn-perl libio-socket-inet6-perl libsocket6-perl```
 <br><br>
