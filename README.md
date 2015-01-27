@@ -27,6 +27,15 @@ CentOS 5/6/7
 Ubuntu 12/14
 <br><br>
 #### Installation ####
+<b>Note:</b> If you find the GUI not loading it's likely because you are blocked from it. Make sure you whitelist yourself.
+```
+sed -i -e "s|IGNORE_ALLOW = "0"|IGNORE_ALLOW = "1"|g" /etc/csf/csf.conf
+```
+```
+csf -a 1.1.1.1 /etc/init.d/csf restart
+```
+<br><br>
+#### Installation ####
 
 ```
 wget --no-check-certificate https://raw.github.com/stokes84/ConfigServer-Firewall-Installer/master/install.sh; bash install.sh; rm -f install.sh
