@@ -34,6 +34,13 @@ systemctl stop firewalld
 ```
 systemctl disable firewalld
 ```
+GUI not serving a page after firewall changes? Try stopping and restarting in this order.
+```
+service csf stop && service lfd stop
+```
+```
+service csf start && service lfd start
+```
 #### Installation ####
 
 ```
