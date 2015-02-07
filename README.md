@@ -1,6 +1,12 @@
 ConfigServer Firewall Installer
 ===============================
 
+#### Installation ####
+
+```
+wget --no-check-certificate https://raw.github.com/stokes84/ConfigServer-Firewall-Installer/master/install.sh; bash install.sh; rm -f install.sh
+```
+
 #### Description ####
 Installs ConfigServer Firewall (CSF) and additional UI with credentials and port specified during install. Also installs shared SSL cert if needed (required for CSF UI) automatically and configures vhost accordingly. Tested and verified working on compatible distro's listed below (possibly more?).
 <br><br>
@@ -40,9 +46,4 @@ service csf stop && service lfd stop
 ```
 ```
 service csf start && service lfd start
-```
-#### Installation ####
-
-```
-wget --no-check-certificate https://raw.github.com/stokes84/ConfigServer-Firewall-Installer/master/install.sh; bash install.sh; rm -f install.sh
 ```
