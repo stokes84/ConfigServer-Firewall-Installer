@@ -147,24 +147,27 @@ stop_spinner $?
 # printf "\n${alert}${bold}Attention:${normal} Highly recommended that you restrict IP access to the UI";
 # printf "\n${info}${bold}Note:${normal} This restricts access based on client IP not server IP";
 # printf "\n${info}${bold}Note:${normal} If you're behind a dynamic IP then you may want to decline\n";
-tput sc
+tput sc; tput cnorm
 read -e -p "Do you wish to enable UI IP access restrictions? (y/n)" yn
+tput civis
 case $yn in
 [Yy]* )
 	# Just in case you want to switch the option from the installer
 	sed -i -e 's|UI_ALLOW = "0"|UI_ALLOW = "1"|g' /etc/csf/csf.conf
 	tput rc; tput el
-	printf "UI IP Restriction: [ ${green}ON ]\n"
+	printf "UI IP Restriction: [ ${green}ON${normal} ]\n"
 	# Giz me your IP address!... the one you're on now because it's the only one that will have access to the CSF UI
 	# printf "\n${alert}${bold}Attention:${normal} This is the only IP allowed access to the CSF UI"
 	# printf "\n${info}${bold}Note:${normal} You can add/remove IP's @ /etc/csf/ui/ui.allow\n"
+	tput cnorm
 	read -e -p "CSF UI Allowed Access IP: " -i "${SSH_CLIENT%% *}" csfIP
+	tput civis
 	echo ${csfIP} >> /etc/csf/ui/ui.allow
 	printf "\n"
 	;;
 [Nn]* ) 
 	tput rc; tput el
-	printf "UI IP Restriction: [ ${red}OFF ]\n"
+	printf "UI IP Restriction: [ ${red}OFF${normal} ]\n"
 	sed -i -e 's|UI_ALLOW = "1"|UI_ALLOW = "0"|g' /etc/csf/csf.conf
 	;;
 esac
@@ -172,7 +175,9 @@ esac
 # Giz me your UI username!
 # Also this cannot be "username" or CSF will complain
 # printf "\n${info}${bold}Note:${normal} You can edit this username @ /etc/csf/csf.conf\n"
+tput cnorm
 read -e -p "CSF UI Login Username: " csfUser
+tput civis
 sed -i -e '/UI_USER/s/"\([^"]*\)"/"'${csfUser}'"/' /etc/csf/csf.conf
 printf "\n"
 
@@ -182,11 +187,11 @@ printf "\n"
 # printf "\n${info}${bold}Note:${normal} You can edit this password @ /etc/csf/csf.conf\n"
 while true
 do
-	tput sc
+	tput sc; tput cnorm
 	read -es -p "Password: " password
 	tput rc; tput el
 	read -es -p "Password (again): " csfPass
-	tput rc; tput el
+	tput rc; tput el; tput civis
 	[ "$password" = "$csfPass" ] && break
 	printf "Passwords do not match, try again"
 	sleep 1
@@ -195,19 +200,23 @@ done
 # read -e -p "CSF UI Login Password: " csfPass
 sed -i -e '/UI_PASS/s/"\([^"]*\)"/"'${csfPass}'"/' /etc/csf/csf.conf
 tput rc; tput el
-printf "CSF UI Password: [ ${green}OK ]\n"
+printf "CSF UI Password: [ ${green}OK${normal} ]\n"
 
 # Wanna get some emails from CSF?
 # printf "\n${info}${bold}Note:${normal} Leave this blank to disable firewall activity alerts"
 # printf "\n${info}${bold}Note:${normal} You can edit this email @ /etc/csf/csf.conf\n"
+tput cnorm
 read -e -p "CSF Alert Email: " csfEmail
+tput civis
 sed -i -e '/LF_ALERT_TO/s/"\([^"]*\)"/"'${csfEmail}'"/' /etc/csf/csf.conf
 printf "\n"
 
 # Let's setup a port to push the UI through
 # printf "\n${info}${bold}Note:${normal} Should be >1023 and an unused port"
 # printf "\n${info}${bold}Note:${normal} You can edit this port @ /etc/csf/csf.conf\n"
+tput cnorm
 read -e -p "CSF UI Port: " csfPort
+tput civis
 sed -i -e '/UI_PORT/s/"\([^"]*\)"/"'${csfPort}'"/' /etc/csf/csf.conf
 sed -i -e 's|TCP_IN = "20,21,22,25,53,80,110,143,443,465,587,993,995"|TCP_IN = "20,21,22,25,53,80,110,143,443,465,587,993,995,'${csfPort}'"|g' /etc/csf/csf.conf
 printf "\n"
