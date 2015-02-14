@@ -15,6 +15,8 @@ normal=$(tput sgr0)
 red=$(tput setaf 1; tput bold)
 green=$(tput setaf 2; tput bold)
 
+script_dir="$( cd "$( dirname "$0" )" && pwd )"
+
 # Ensure this script is run as root
 if [ "$(id -u)" != "0" ]; then
     echo "#\tThis script must be run as root." 1>&2
@@ -233,6 +235,8 @@ stop_spinner $?
 # printf "\n${alert}${bold}Attention:${normal} SSL is ${bold}required${normal} for connecting to the CSF UI\n";
 tput sc; tput cnorm
 read -e -p "Do you need SSL installed and configured (required for UI)? (y/n)" yn
+read -e -p "FQDN: " domain
+read -e -p "Email: " email
 case $yn in
 [Yy]* ) 
 	tput rc; tput el; tput civis
@@ -241,22 +245,18 @@ case $yn in
 
 	{
 	# echo "Installing and configuring SSL for CSF UI access..."
-	script_dir="$( cd "$( dirname "$0" )" && pwd )"
 	if [ -f /etc/redhat-release ]; then
 		yum -y install mod_ssl
 		cd /etc/csf/ui
-		openssl genrsa -out server.key 2048
-		openssl req -key server.key -new -out server.csr
-		openssl x509 -subj "/C=US/ST=WA/L=Seattle/O=NA/CN=www.website.com" -in server.csr -out server.crt -req -signkey server.key -days 3650
+		openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj "/C=US/ST=WA/L=Seattle/O=NA/CN=${domain}" -keyout server.key -out server.crt
 		chmod 400 server.*
 		cp server.key /etc/pki/tls/certs/server.key
 		cp server.crt /etc/pki/tls/certs/server.crt
 		sed -i -e 's|SSLCertificateFile /etc/pki/tls/certs/localhost.crt|SSLCertificateFile /etc/pki/tls/certs/server.crt|g' /etc/httpd/conf.d/ssl.conf
 		sed -i -e 's|SSLCertificateKeyFile /etc/pki/tls/private/localhost.key|SSLCertificateKeyFile /etc/pki/tls/certs/server.key|g' /etc/httpd/conf.d/ssl.conf
-		cd $script_dir
 	else
 		cd /etc/csf/ui
-		openssl req -x509 -subj "/C=US/ST=WA/L=Seattle/O=NA/CN=www.website.com" -nodes -days 3650 -newkey rsa:2048 -out server.crt -keyout server.key
+		openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj "/C=US/ST=WA/L=Seattle/O=NA/CN=${domain}" -keyout server.key -out server.crt
 		chmod 400 server.*
 		mkdir /etc/apache2/ssl/
 		a2enmod ssl
@@ -264,9 +264,9 @@ case $yn in
 		cp server.crt /etc/apache2/ssl/server.crt
 		ln -s /etc/apache2/mods-available/ssl.load /etc/apache2/mods-enabled/ssl.load
 		ln -s /etc/apache2/mods-available/ssl.conf /etc/apache2/mods-enabled/ssl.conf
-		printf "\n${info}${bold}Note:${normal} You can edit this file @ /etc/apache2/sites-available/domain.com.conf\n"
-		read -e -p "Your FQDN: " -i "your-domain.com" domain
-		read -e -p "Your Email: " -i "you@your-domain.com" email
+		# printf "\n${info}${bold}Note:${normal} You can edit this file @ /etc/apache2/sites-available/domain.com.conf\n"
+		# read -e -p "Your FQDN: " -i "your-domain.com" domain
+		# read -e -p "Your Email: " -i "you@your-domain.com" email
 		echo "
 		<virtualhost *:443>
 		ServerName ${domain}
@@ -280,9 +280,9 @@ case $yn in
 		SSLCertificateFile /etc/apache2/ssl/server.crt
 		SSLCertificateKeyFile /etc/apache2/ssl/server.key
 		</virtualhost>" >> /etc/apache2/sites-available/${domain}.conf
-		cd $script_dir
+		cd 
 	fi
-	} &> install.log
+	} &> ${script_dir}/install.log
 	
 	stop_spinner $?
 	;;
