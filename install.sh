@@ -235,10 +235,12 @@ stop_spinner $?
 # printf "\n${alert}${bold}Attention:${normal} SSL is ${bold}required${normal} for connecting to the CSF UI\n";
 tput sc; tput cnorm
 read -e -p "Do you need SSL installed and configured (required for UI)? (y/n)" yn
-read -e -p "FQDN: " domain
-read -e -p "Email: " email
 case $yn in
 [Yy]* ) 
+	tput rc; tput el
+	read -e -p "FQDN: " domain
+	tput rc; tput el
+	read -e -p "Email: " email
 	tput rc; tput el; tput civis
 	
 	start_spinner "${bold}Installing OpenSSL & Configuring${normal}"
