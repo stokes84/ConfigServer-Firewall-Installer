@@ -163,7 +163,6 @@ case $yn in
 	read -e -p "CSF UI Allowed Access IP: " -i "${SSH_CLIENT%% *}" csfIP
 	tput civis
 	echo ${csfIP} >> /etc/csf/ui/ui.allow
-	printf "\n"
 	;;
 [Nn]* ) 
 	tput rc; tput el
@@ -179,7 +178,6 @@ tput cnorm
 read -e -p "CSF UI Login Username: " csfUser
 tput civis
 sed -i -e '/UI_USER/s/"\([^"]*\)"/"'${csfUser}'"/' /etc/csf/csf.conf
-printf "\n"
 
 # Giz me your UI password!
 # You'll want this one strong although CSF has built in brute force detection (4 attempts)
@@ -209,7 +207,6 @@ tput cnorm
 read -e -p "CSF Alert Email: " csfEmail
 tput civis
 sed -i -e '/LF_ALERT_TO/s/"\([^"]*\)"/"'${csfEmail}'"/' /etc/csf/csf.conf
-printf "\n"
 
 # Let's setup a port to push the UI through
 # printf "\n${info}${bold}Note:${normal} Should be >1023 and an unused port"
@@ -219,7 +216,6 @@ read -e -p "CSF UI Port: " csfPort
 tput civis
 sed -i -e '/UI_PORT/s/"\([^"]*\)"/"'${csfPort}'"/' /etc/csf/csf.conf
 sed -i -e 's|TCP_IN = "20,21,22,25,53,80,110,143,443,465,587,993,995"|TCP_IN = "20,21,22,25,53,80,110,143,443,465,587,993,995,'${csfPort}'"|g' /etc/csf/csf.conf
-printf "\n"
 
 start_spinner "${bold}Removing Installation Files & APF+BFD${normal}"
 
@@ -235,11 +231,11 @@ stop_spinner $?
 
 # Install SSL if you say we need to (we need it for UI access)
 # printf "\n${alert}${bold}Attention:${normal} SSL is ${bold}required${normal} for connecting to the CSF UI\n";
-tput sc
+tput sc; tput cnorm
 read -e -p "Do you need SSL installed and configured (required for UI)? (y/n)" yn
 case $yn in
 [Yy]* ) 
-	tput rc; tput el
+	tput rc; tput el; tput civis
 	
 	start_spinner "${bold}Installing OpenSSL & Configuring${normal}"
 
@@ -283,14 +279,15 @@ case $yn in
 		SSLCertificateKeyFile /etc/apache2/ssl/server.key
 		</virtualhost>" >> /etc/apache2/sites-available/${domain}.conf
 	fi
+	
+	;;
+
 	} &> install.log
 
 	stop_spinner $?
-	
-	;;
 [Nn]* ) 
 	# printf "\n${alert}${bold}Attention:${normal} Make sure you copy your key and cert files to /etc/csf/ui\n";
-	tput rc; tput el
+	tput rc; tput el; tput civis
 	printf "SSL Installation: [ ${red}NO ]\n"
 	;;
 esac
