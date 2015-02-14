@@ -5,7 +5,7 @@ tput clear
 
 # Hide Cursor
 tput civis
-trap tput cnorm EXIT
+trap 'tput cnorm' EXIT
 
 # Set some styles
 bold=$(tput bold)
