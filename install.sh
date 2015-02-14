@@ -241,6 +241,7 @@ case $yn in
 
 	{
 	# echo "Installing and configuring SSL for CSF UI access..."
+	script_dir="$( cd "$( dirname "$0" )" && pwd )"
 	if [ -f /etc/redhat-release ]; then
 		yum -y install mod_ssl
 		cd /etc/csf/ui
@@ -252,6 +253,7 @@ case $yn in
 		cp server.crt /etc/pki/tls/certs/server.crt
 		sed -i -e 's|SSLCertificateFile /etc/pki/tls/certs/localhost.crt|SSLCertificateFile /etc/pki/tls/certs/server.crt|g' /etc/httpd/conf.d/ssl.conf
 		sed -i -e 's|SSLCertificateKeyFile /etc/pki/tls/private/localhost.key|SSLCertificateKeyFile /etc/pki/tls/certs/server.key|g' /etc/httpd/conf.d/ssl.conf
+		cd $script_dir
 	else
 		cd /etc/csf/ui
 		openssl req -x509 -subj "/C=US/ST=WA/L=Seattle/O=NA/CN=www.website.com" -nodes -days 3650 -newkey rsa:2048 -out server.crt -keyout server.key
@@ -278,6 +280,7 @@ case $yn in
 		SSLCertificateFile /etc/apache2/ssl/server.crt
 		SSLCertificateKeyFile /etc/apache2/ssl/server.key
 		</virtualhost>" >> /etc/apache2/sites-available/${domain}.conf
+		cd $script_dir
 	fi
 	} &> install.log
 	
