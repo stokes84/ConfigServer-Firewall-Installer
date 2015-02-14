@@ -279,12 +279,10 @@ case $yn in
 		SSLCertificateKeyFile /etc/apache2/ssl/server.key
 		</virtualhost>" >> /etc/apache2/sites-available/${domain}.conf
 	fi
-	
-	;;
-
 	} &> install.log
-
+	
 	stop_spinner $?
+	;;
 [Nn]* ) 
 	# printf "\n${alert}${bold}Attention:${normal} Make sure you copy your key and cert files to /etc/csf/ui\n";
 	tput rc; tput el; tput civis
