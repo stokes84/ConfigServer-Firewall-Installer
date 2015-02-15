@@ -300,9 +300,9 @@ start_spinner "${bold}Starting CSF+LFD${normal}"
 {
 # Restart firewall and Apache
 if [ -f /etc/redhat-release ]; then
-	service httpd stop && service httpd start && csf -r && service lfd restart
+	service httpd stop && service httpd start && csf -r && lfd -r
 else
-	service apache2 stop && service apache2 start && csf -r && service lfd restart
+	service apache2 stop && service apache2 start && csf -r && lfd -r
 fi
 } &> install.log
 
