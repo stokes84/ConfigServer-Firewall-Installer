@@ -241,6 +241,14 @@ case $yn in
 	read -e -p "FQDN: " domain
 	tput rc; tput el
 	read -e -p "Email: " email
+	tput rc; tput el
+	read -e -p "SSL 2-Digit Country Code: " country
+	tput rc; tput el
+	read -e -p "SSL State: " state
+	tput rc; tput el
+	read -e -p "SSL City: " city
+	tput rc; tput el
+	read -e -p "SSL Organization: " organization
 	tput rc; tput el; tput civis
 	
 	start_spinner "${bold}Installing OpenSSL & Configuring${normal}"
@@ -250,7 +258,7 @@ case $yn in
 	if [ -f /etc/redhat-release ]; then
 		yum -y install mod_ssl
 		cd /etc/csf/ui
-		openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj "/C=US/ST=WA/L=Seattle/O=NA/CN=${domain}" -keyout server.key -out server.crt
+		openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj "/C=${country}/ST=${state}/L=${city}/O=${organization}/CN=${domain}" -keyout server.key -out server.crt
 		chmod 400 server.*
 		cp server.key /etc/pki/tls/certs/server.key
 		cp server.crt /etc/pki/tls/certs/server.crt
@@ -258,7 +266,7 @@ case $yn in
 		sed -i -e 's|SSLCertificateKeyFile /etc/pki/tls/private/localhost.key|SSLCertificateKeyFile /etc/pki/tls/certs/server.key|g' /etc/httpd/conf.d/ssl.conf
 	else
 		cd /etc/csf/ui
-		openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj "/C=US/ST=WA/L=Seattle/O=NA/CN=${domain}" -keyout server.key -out server.crt
+		openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj "/C=${country}/ST=${state}/L=${city}/O=${organization}/CN=${domain}" -keyout server.key -out server.crt
 		chmod 400 server.*
 		mkdir /etc/apache2/ssl/
 		a2enmod ssl
