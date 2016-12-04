@@ -122,7 +122,7 @@ start_spinner "${bold}Installing Latest Version of CSF${normal}"
 mkdir -p /tmp/csf_install
 
 # Grab the latest version of CSF for FREE!!! ...let's decompress and install it too
-wget -q -O /tmp/csf_install/csf.tgz http://www.configserver.com/free/csf.tgz
+wget -q -O /tmp/csf_install/csf.tgz https://download.configserver.com/csf.tgz
 tar -xf /tmp/csf_install/csf.tgz -C /tmp/csf_install
 cd /tmp/csf_install/csf && sh install.sh
 } &> install.log
