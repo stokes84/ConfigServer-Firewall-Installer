@@ -292,7 +292,7 @@ case $yn in
 		</virtualhost>" >> /etc/apache2/sites-available/${domain}.conf
 		cd 
 	fi
-	} &> ${script_dir}/install.log
+	} &> install.log
 	
 	stop_spinner $?
 	;;
